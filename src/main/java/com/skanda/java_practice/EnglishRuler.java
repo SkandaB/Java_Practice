@@ -4,24 +4,34 @@ package com.skanda.java_practice;
 public class EnglishRuler {
 
     public static void main(String[] args) {
-        int tickLength = 5;
-        int rulerLength = 3;
+        int rulerLength = Integer.parseInt(args[0]);
+        int tickLength = Integer.parseInt(args[1]);
 
-        printRuler(tickLength, 0, rulerLength, tickLength);
+        // Draw 0th label
+        printTicks(tickLength, 0);
+
+        // Iterate to draw all major length with label
+        for(int i = 1; i <= rulerLength; i++) {
+            printRuler(tickLength - 1);     // Draw central intervals without labels
+            printTicks(tickLength, i);             // Print major length with label
+        }
+
+//        printRuler(tickLength, 0, rulerLength, tickLength);
     }
 
-    private static void printRuler(int tickLen, int currRul, int rulerLen, int maxTickLen) {
+    private static void printRuler(int tickLen) {
 
         if (tickLen == 0) {
             return;
         } else {
-            // print descending
-            printRuler(tickLen - 1, currRul, rulerLen, maxTickLen);
+            // recursive call to draw top interval
+            printRuler(tickLen - 1);
 
-            printTicks(tickLen, tickLen);
+            // Central line between major interval, no label
+            printTicks(tickLen, -1);
 
-            // print ascending
-            printRuler(tickLen - 1, currRul, rulerLen, maxTickLen);
+            // recursive call to draw bottom interval
+            printRuler(tickLen - 1);
 
         }
     }
@@ -29,7 +39,7 @@ public class EnglishRuler {
     private static void printTicks(int len, int labelLength) {
         for (int i = 0; i < len; i++)
             System.out.print("-");
-        if(labelLength > 0)
+        if(labelLength >= 0)
             System.out.print("\t" + labelLength);
         System.out.println();
 
